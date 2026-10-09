@@ -11,7 +11,8 @@ COPY . .
 COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY docker/railway-entrypoint.sh /usr/local/bin/railway-entrypoint
 
-RUN chmod +x /usr/local/bin/railway-entrypoint \
+RUN sed -i 's/\r$//' /usr/local/bin/railway-entrypoint \
+    && chmod +x /usr/local/bin/railway-entrypoint \
     && chown -R www-data:www-data /var/www/html/writable
 
 ENV CI_ENVIRONMENT=production
