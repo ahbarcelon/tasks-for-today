@@ -35,6 +35,13 @@ echo "Database connection is ready; preparing the schema."
 php docker/bootstrap.php
 echo "Database schema is ready; starting Apache on port ${PORT:-80}."
 
+# Git does not preserve empty runtime directories, and Railway can recreate
+# them as root. Ensure Apache's www-data worker can write cache, logs, and
+# sessions every time a container starts.
+mkdir -p writable/cache writable/debugbar writable/logs writable/session writable/uploads
+chown -R www-data:www-data writable
+chmod -R ug+rwX writable
+
 # Railway's runtime can preserve an event/worker MPM link alongside the
 # prefork MPM required by mod_php. Normalize the enabled MPM before startup.
 a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
