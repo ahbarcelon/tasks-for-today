@@ -35,4 +35,9 @@ echo "Database connection is ready; preparing the schema."
 php docker/bootstrap.php
 echo "Database schema is ready; starting Apache on port ${PORT:-80}."
 
+# Railway's runtime can preserve an event/worker MPM link alongside the
+# prefork MPM required by mod_php. Normalize the enabled MPM before startup.
+a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
+a2enmod mpm_prefork >/dev/null 2>&1 || true
+
 exec apache2-foreground
