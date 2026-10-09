@@ -1,0 +1,10 @@
+.env
+vendor/
+writable/cache/*
+writable/logs/*
+writable/session/*
+writable/debugbar/*
+!writable/**/index.html
+!writable/**/.htaccess
+.idea/
+.vscode/
