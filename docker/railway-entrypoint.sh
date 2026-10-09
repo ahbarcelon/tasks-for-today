@@ -31,8 +31,8 @@ until php -r '
     sleep 3
 done
 
-echo "Database connection is ready; running migrations."
-php spark migrate --all
-echo "Migrations complete; starting Apache on port ${PORT:-80}."
+echo "Database connection is ready; preparing the schema."
+php docker/bootstrap.php
+echo "Database schema is ready; starting Apache on port ${PORT:-80}."
 
-exec "$@"
+exec apache2-foreground
